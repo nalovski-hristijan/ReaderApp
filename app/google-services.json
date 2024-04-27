@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "977129053195",
+    "project_id": "reader-c078c",
+    "storage_bucket": "reader-c078c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977129053195:android:0d04a21d076348eb7f7b0e",
+        "android_client_info": {
+          "package_name": "com.hnalovski.readerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlXowsgOri3LtCMTomS65yo9xRV7T76B4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
