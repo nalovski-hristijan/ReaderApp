@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import com.hnalovski.readerapp.navigation.ReaderScreens
 import kotlinx.coroutines.delay
 
@@ -38,7 +39,13 @@ fun ReaderSplashScreen(navController: NavHostController) {
         }))
 
         delay(2000L)
-        navController.navigate(ReaderScreens.LoginScreen.name)
+        // check if there is a user already logged in
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
+            navController.navigate(ReaderScreens.LoginScreen.name)
+        } else {
+            navController.navigate(ReaderScreens.HomeScreen.name)
+        }
+
     }
 
     Surface(
