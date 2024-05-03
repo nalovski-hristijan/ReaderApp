@@ -1,5 +1,6 @@
 package com.hnalovski.readerapp.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +43,7 @@ fun ReaderHomeScreen(navController: NavHostController) {
     Scaffold(topBar = {
         ReaderAppBar(title = "Reader", navController = navController)
     }, floatingActionButton = {
-        FABContent {}
+        FABContent { navController.navigate(ReaderScreens.SearchScreen.name) }
     }) { innerPadding ->
         Surface(
             modifier = Modifier

@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.log
 
 class ReaderLoginViewModel : ViewModel() {
-    //val loadingState = MutableStateFlow(LoadingState.IDLE)
+
     private val auth: FirebaseAuth = Firebase.auth
 
     private val _loading = MutableLiveData(false)

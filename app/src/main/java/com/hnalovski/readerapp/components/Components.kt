@@ -1,8 +1,10 @@
 package com.hnalovski.readerapp.components
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +42,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -175,8 +178,10 @@ fun TitleSection(modifier: Modifier = Modifier, label: String) {
 @Composable
 fun ReaderAppBar(
     title: String,
+    icon: ImageVector? = null,
     showProfile: Boolean = true,
-    navController: NavController
+    navController: NavController,
+    onArrowClicked: () -> Unit = {}
 ) {
     TopAppBar(title = {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -189,12 +194,19 @@ fun ReaderAppBar(
                         .scale(0.5f)
                 )
             }
+            if (icon != null) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = "arrow back",
+                    tint = Color.Red.copy(alpha = 0.7f),
+                    modifier = Modifier.clickable { onArrowClicked.invoke() })
+            }
+            Spacer(modifier = Modifier.width(90.dp))
             Text(
                 text = title,
                 color = Color.Red.copy(alpha = 0.7f),
                 style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp)
             )
-            Spacer(modifier = Modifier.width(150.dp))
 
         }
     }, modifier = Modifier, actions = {
@@ -202,15 +214,25 @@ fun ReaderAppBar(
             FirebaseAuth.getInstance().signOut()
                 .run { navController.navigate(ReaderScreens.LoginScreen.name) }
         }) {
-            Icon(painter = painterResource(id = R.drawable.logout), contentDescription = "logout")
+            if (showProfile) {
+                Icon(
+                    painter = painterResource(id = R.drawable.logout),
+                    contentDescription = "logout"
+                )
+            } else {
+                Box {
+
+                }
+            }
+
         }
     }, colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent))
 }
 
 @Composable
-fun FABContent(content: () -> Unit) {
+fun FABContent(onTap: () -> Unit) {
     FloatingActionButton(
-        onClick = { },
+        onClick = { onTap.invoke() },
         shape = RoundedCornerShape(50.dp),
         containerColor = Color(0xFF92CBDF),
     ) {
