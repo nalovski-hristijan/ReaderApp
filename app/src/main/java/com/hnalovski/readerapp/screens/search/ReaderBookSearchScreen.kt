@@ -41,6 +41,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.hnalovski.readerapp.components.InputField
 import com.hnalovski.readerapp.components.ReaderAppBar
 import com.hnalovski.readerapp.model.Item
+import com.hnalovski.readerapp.navigation.ReaderScreens
 
 @Composable
 fun ReaderSearchScreen(
@@ -140,7 +141,9 @@ fun BookList(navController: NavController, viewModel: ReaderSearchViewModel = hi
 @Composable
 fun BookRow(book: Item, navController: NavController) {
     Card(modifier = Modifier
-        .clickable { }
+        .clickable {
+            navController.navigate(ReaderScreens.DetailScreen.name + "/${book.id}")
+        }
         .fillMaxWidth()
         .height(100.dp)
         .padding(3.dp), shape = RectangleShape,
