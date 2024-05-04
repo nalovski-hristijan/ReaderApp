@@ -10,11 +10,13 @@ import androidx.navigation.navArgument
 import com.hnalovski.readerapp.screens.ReaderSplashScreen
 import com.hnalovski.readerapp.screens.detail.ReaderDetailsScreen
 import com.hnalovski.readerapp.screens.home.ReaderHomeScreen
+import com.hnalovski.readerapp.screens.home.ReaderHomeViewModel
 import com.hnalovski.readerapp.screens.login.ReaderLoginScreen
 import com.hnalovski.readerapp.screens.search.ReaderSearchScreen
 import com.hnalovski.readerapp.screens.search.ReaderSearchViewModel
 import com.hnalovski.readerapp.screens.stats.ReaderStatsScreen
 import com.hnalovski.readerapp.screens.update.ReaderUpdateScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun ReaderNavigation() {
@@ -25,7 +27,8 @@ fun ReaderNavigation() {
             ReaderSplashScreen(navController = navController)
         }
         composable(route = ReaderScreens.HomeScreen.name) {
-            ReaderHomeScreen(navController = navController)
+            val viewModel = hiltViewModel<ReaderHomeViewModel>()
+            ReaderHomeScreen(navController = navController, viewModel = viewModel)
         }
         val detailsName = ReaderScreens.DetailScreen.name
         composable(

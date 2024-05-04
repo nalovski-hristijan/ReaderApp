@@ -322,7 +322,7 @@ fun ListCard(
         ) {
             Row(horizontalArrangement = Arrangement.Center) {
                 Image(
-                    painter = rememberAsyncImagePainter(model = R.drawable.ic_launcher_background),
+                    painter = rememberAsyncImagePainter(model = book.photoUrl),
                     contentDescription = "book image",
                     modifier = Modifier
                         .height(140.dp)

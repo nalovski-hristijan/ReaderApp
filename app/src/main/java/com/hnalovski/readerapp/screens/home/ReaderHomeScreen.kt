@@ -28,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
@@ -39,7 +41,10 @@ import com.hnalovski.readerapp.model.MBook
 import com.hnalovski.readerapp.navigation.ReaderScreens
 
 @Composable
-fun ReaderHomeScreen(navController: NavHostController) {
+fun ReaderHomeScreen(
+    navController: NavHostController,
+    viewModel: ReaderHomeViewModel = hiltViewModel()
+) {
     Scaffold(topBar = {
         ReaderAppBar(title = "Reader", navController = navController)
     }, floatingActionButton = {
@@ -50,18 +55,21 @@ fun ReaderHomeScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            HomeContent(navController)
+            HomeContent(navController, viewModel)
         }
     }
 }
 
 @Composable
-fun HomeContent(navController: NavController) {
-    val listOfBooks =
-        listOf(
-            MBook(id = "fsdaf", title = "ASDAS", authors = "Everyone", notes = null),
-            MBook(id = "bxcv", title = "agewg", authors = "gdsagae", notes = null)
-        )
+fun HomeContent(navController: NavController, viewModel: ReaderHomeViewModel) {
+    var listOfBooks = emptyList<MBook>()
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    if (!viewModel.data.value.data.isNullOrEmpty()){
+        listOfBooks = viewModel.data.value.data?.toList()!!.filter { mBook ->
+            mBook.userId == currentUser?.uid.toString()
+        }
+        Log.d("Books", "HomeContent: $listOfBooks")
+    }
     val email = FirebaseAuth.getInstance().currentUser?.email
     val currentUserName = if (!email.isNullOrEmpty()) {
         email.split("@")[0]
