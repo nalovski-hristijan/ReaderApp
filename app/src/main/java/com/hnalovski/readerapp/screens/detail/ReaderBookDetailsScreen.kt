@@ -46,6 +46,7 @@ import com.hnalovski.readerapp.components.ReaderAppBar
 import com.hnalovski.readerapp.components.RoundedButton
 import com.hnalovski.readerapp.data.Resource
 import com.hnalovski.readerapp.model.MBook
+import com.hnalovski.readerapp.navigation.ReaderScreens
 
 @Composable
 fun ReaderDetailsScreen(
@@ -217,7 +218,7 @@ fun saveToFirebase(book: MBook, navController: NavController) {
             dbCollection.document(docId).update(hashMapOf("id" to docId) as Map<String, Any>)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        navController.popBackStack()
+                        navController.navigate(ReaderScreens.HomeScreen.name)
                     }
 
                 }.addOnFailureListener{

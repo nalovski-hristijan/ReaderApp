@@ -1,6 +1,7 @@
 package com.hnalovski.readerapp.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,9 +16,9 @@ import com.hnalovski.readerapp.screens.login.ReaderLoginScreen
 import com.hnalovski.readerapp.screens.search.ReaderSearchScreen
 import com.hnalovski.readerapp.screens.search.ReaderSearchViewModel
 import com.hnalovski.readerapp.screens.stats.ReaderStatsScreen
-import com.hnalovski.readerapp.screens.update.ReaderUpdateScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.hnalovski.readerapp.screens.update.ReaderBookUpdateScreen
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ReaderNavigation() {
     val navController = rememberNavController()
@@ -50,8 +51,14 @@ fun ReaderNavigation() {
 
             ReaderStatsScreen(navController = navController)
         }
-        composable(route = ReaderScreens.UpdateScreen.name) {
-            ReaderUpdateScreen(navController = navController)
+        val updateName = ReaderScreens.UpdateScreen.name
+        composable("$updateName/{bookItemId}", arguments = listOf(navArgument("bookItemId") {
+            type = NavType.StringType
+        })) {backStack ->
+
+            backStack.arguments?.getString("bookItemId").let { 
+                ReaderBookUpdateScreen(navController = navController, bookItemId = it.toString())
+            }
         }
 
     }

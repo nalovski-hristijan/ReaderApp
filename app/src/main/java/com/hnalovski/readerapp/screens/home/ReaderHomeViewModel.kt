@@ -14,9 +14,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReaderHomeViewModel @Inject constructor(
-    private val repository: FireRepository): ViewModel() {
-    val data: MutableState<DataOrException<List<MBook>, Boolean, Exception>>
-            = mutableStateOf(DataOrException(listOf(), true,Exception("")))
+    private val repository: FireRepository
+) : ViewModel() {
+    val data: MutableState<DataOrException<List<MBook>, Boolean, Exception>> =
+        mutableStateOf(DataOrException(listOf(), true, Exception("")))
 
     init {
         getAllBooksFromDatabase()
