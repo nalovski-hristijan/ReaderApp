@@ -27,10 +27,12 @@ fun ReaderNavigation() {
         composable(route = ReaderScreens.SplashScreen.name) {
             ReaderSplashScreen(navController = navController)
         }
+
         composable(route = ReaderScreens.HomeScreen.name) {
             val viewModel = hiltViewModel<ReaderHomeViewModel>()
             ReaderHomeScreen(navController = navController, viewModel = viewModel)
         }
+
         val detailsName = ReaderScreens.DetailScreen.name
         composable(
             route = "$detailsName/{bookId}",
@@ -40,23 +42,27 @@ fun ReaderNavigation() {
                 .let { ReaderDetailsScreen(navController = navController, bookId = it.toString()) }
 
         }
+
         composable(route = ReaderScreens.LoginScreen.name) {
             ReaderLoginScreen(navController = navController)
         }
+
         composable(route = ReaderScreens.SearchScreen.name) {
             val viewModel = hiltViewModel<ReaderSearchViewModel>()
             ReaderSearchScreen(navController = navController, viewModel)
         }
-        composable(route = ReaderScreens.StatsScreen.name) {
 
-            ReaderStatsScreen(navController = navController)
+        composable(route = ReaderScreens.StatsScreen.name) {
+            val viewModel = hiltViewModel<ReaderHomeViewModel>()
+            ReaderStatsScreen(navController = navController, viewModel = viewModel )
         }
+
         val updateName = ReaderScreens.UpdateScreen.name
         composable("$updateName/{bookItemId}", arguments = listOf(navArgument("bookItemId") {
             type = NavType.StringType
-        })) {backStack ->
+        })) { backStack ->
 
-            backStack.arguments?.getString("bookItemId").let { 
+            backStack.arguments?.getString("bookItemId").let {
                 ReaderBookUpdateScreen(navController = navController, bookItemId = it.toString())
             }
         }
