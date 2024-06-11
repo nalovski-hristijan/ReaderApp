@@ -32,6 +32,4 @@ class ReaderHomeViewModel @Inject constructor(
         Log.d("GET", "getAllBooksFromDatabase: ${data.value.data?.toList().toString()}")
 
     }
-
-
 }

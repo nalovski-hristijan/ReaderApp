@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.google.firebase.auth.FirebaseAuth
 import com.hnalovski.readerapp.components.ReaderAppBar
@@ -39,18 +40,22 @@ import com.hnalovski.readerapp.utils.formatDate
 import java.util.*
 
 @Composable
-fun ReaderStatsScreen(navController: NavController,
-                      viewModel: ReaderHomeViewModel = hiltViewModel()) {
+fun ReaderStatsScreen(
+    navController: NavController,
+    viewModel: ReaderHomeViewModel = hiltViewModel()
+) {
 
     var books: List<MBook>
     val currentUser = FirebaseAuth.getInstance().currentUser
 
     Scaffold(
         topBar = {
-            ReaderAppBar(title = "Book Stats",
+            ReaderAppBar(
+                title = "Book Stats",
                 icon = Icons.AutoMirrored.Filled.ArrowBack,
                 showProfile = false,
-                navController = navController){
+                navController = navController
+            ) {
                 navController.popBackStack()
             }
 
@@ -62,45 +67,56 @@ fun ReaderStatsScreen(navController: NavController,
                 viewModel.data.value.data!!.filter { mBook ->
                     (mBook.userId == currentUser?.uid)
                 }
-            }else {
+            } else {
                 emptyList()
 
             }
             Column {
                 Row {
-                    Box(modifier = Modifier
-                        .size(45.dp)
-                        .padding(2.dp)) {
-                        Icon(imageVector = Icons.Sharp.Person,
-                            contentDescription = "icon" )
+                    Box(
+                        modifier = Modifier
+                            .size(45.dp)
+                            .padding(2.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Sharp.Person,
+                            contentDescription = "icon"
+                        )
                     }
                     //paul @ me.com
-                    Text(text = "Hi, ${
-                        currentUser?.email.toString().split("@")[0].uppercase(Locale.getDefault())
-                    }")
+                    Text(
+                        text = "Hi, ${
+                            currentUser?.email.toString()
+                                .split("@")[0].uppercase(Locale.getDefault())
+                        }"
+                    )
 
                 }
-                Card(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(4.dp),
                     shape = CircleShape,
                     elevation = CardDefaults.cardElevation(5.dp)
                 ) {
-                    val readBooksList: List<MBook> = if (!viewModel.data.value.data.isNullOrEmpty()) {
-                        books.filter { mBook ->
-                            (mBook.userId == currentUser?.uid) && (mBook.finishedReading != null)
-                        }
+                    val readBooksList: List<MBook> =
+                        if (!viewModel.data.value.data.isNullOrEmpty()) {
+                            books.filter { mBook ->
+                                (mBook.userId == currentUser?.uid) && (mBook.finishedReading != null)
+                            }
 
-                    }else {
-                        emptyList()
-                    }
+                        } else {
+                            emptyList()
+                        }
 
                     val readingBooks = books.filter { mBook ->
                         (mBook.startedReading != null && mBook.finishedReading == null)
                     }
 
-                    Column(modifier = Modifier.padding(start = 25.dp, top = 4.dp, bottom = 4.dp),
-                        horizontalAlignment = Alignment.Start) {
+                    Column(
+                        modifier = Modifier.padding(start = 25.dp, top = 4.dp, bottom = 4.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
                         Text(text = "Your Stats", style = MaterialTheme.typography.titleLarge)
                         HorizontalDivider()
                         Text(text = "You're reading: ${readingBooks.size} books")
@@ -112,32 +128,32 @@ fun ReaderStatsScreen(navController: NavController,
 
                 if (viewModel.data.value.loading == true) {
                     LinearProgressIndicator()
-                }else {
+                } else {
                     HorizontalDivider()
-                    LazyColumn(modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
-                        contentPadding = PaddingValues(16.dp)){
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
                         //filter books by finished ones
-                        val readBooks: List<MBook> = if (!viewModel.data.value.data.isNullOrEmpty()){
-                            viewModel.data.value.data!!.filter { mBook ->
-                                (mBook.userId == currentUser?.uid) && (mBook.finishedReading != null)
-                            }
-                        }else {
-                            emptyList()
+                        val readBooks: List<MBook> =
+                            if (!viewModel.data.value.data.isNullOrEmpty()) {
+                                viewModel.data.value.data!!.filter { mBook ->
+                                    (mBook.userId == currentUser?.uid) && (mBook.finishedReading != null)
+                                }
+                            } else {
+                                emptyList()
 
-                        }
-                        items(items = readBooks) {book ->
-                            BookRowStats(book =book )
+                            }
+                        items(items = readBooks) { book ->
+                            BookRowStats(book = book)
                         }
 
                     }
                 }
 
             }
-
-
-
 
 
         }
@@ -147,11 +163,10 @@ fun ReaderStatsScreen(navController: NavController,
 }
 
 
-
-
 @Composable
 fun BookRowStats(
-    book: MBook) {
+    book: MBook
+) {
     Card(modifier = Modifier
         .clickable {
             //navController.navigate(ReaderScreens.DetailScreen.name + "/${book.id}")
@@ -161,16 +176,18 @@ fun BookRowStats(
         .padding(3.dp),
         shape = RectangleShape,
         elevation = CardDefaults.cardElevation(7.dp)) {
-        Row(modifier = Modifier.padding(5.dp),
-            verticalAlignment = Alignment.Top) {
+        Row(
+            modifier = Modifier.padding(5.dp),
+            verticalAlignment = Alignment.Top
+        ) {
 
-            val imageUrl: String = if(book.photoUrl.toString().isEmpty())
+            val imageUrl: String = if (book.photoUrl.toString().isEmpty())
                 "https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=80&q=80"
             else {
                 book.photoUrl.toString()
             }
             Image(
-                painter = rememberImagePainter(data = imageUrl),
+                painter = rememberAsyncImagePainter(model = imageUrl),
                 contentDescription = "book image",
                 modifier = Modifier
                     .width(80.dp)
@@ -185,32 +202,40 @@ fun BookRowStats(
                     Text(text = book.title.toString(), overflow = TextOverflow.Ellipsis)
                     if (book.rating!! >= 4) {
                         Spacer(modifier = Modifier.fillMaxWidth(0.8f))
-                        Icon(imageVector = Icons.Default.ThumbUp,
+                        Icon(
+                            imageVector = Icons.Default.ThumbUp,
                             contentDescription = "Thumbs up",
-                            tint = Color.Green.copy(alpha = 0.5f))
-                    }else {
-                        Box{}
+                            tint = Color.Green.copy(alpha = 0.5f)
+                        )
+                    } else {
+                        Box {}
                     }
                 }
-                Text(text =  "Author: ${book.authors}",
+                Text(
+                    text = "Author: ${book.authors}",
                     overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
-                    style = MaterialTheme.typography.bodySmall)
+                    style = MaterialTheme.typography.bodySmall
+                )
 
-                Text(text =  "Started: ${
-                    if (book.startedReading != null) formatDate(book.startedReading!!) else "Not started"
-                }",
+                Text(
+                    text = "Started: ${
+                        if (book.startedReading != null) formatDate(book.startedReading!!) else "Not started"
+                    }",
                     softWrap = true,
                     overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
-                    style = MaterialTheme.typography.bodySmall)
+                    style = MaterialTheme.typography.bodySmall
+                )
 
-                Text(text =  "Finished ${
-                    if (book.finishedReading != null) formatDate(book.finishedReading!!) else "Not finished"
-                }",
+                Text(
+                    text = "Finished ${
+                        if (book.finishedReading != null) formatDate(book.finishedReading!!) else "Not finished"
+                    }",
                     overflow = TextOverflow.Clip,
                     fontStyle = FontStyle.Italic,
-                    style = MaterialTheme.typography.bodySmall)
+                    style = MaterialTheme.typography.bodySmall
+                )
 
 
             }

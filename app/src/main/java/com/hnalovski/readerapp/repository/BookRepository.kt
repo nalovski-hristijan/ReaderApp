@@ -1,6 +1,5 @@
 package com.hnalovski.readerapp.repository
 
-import com.hnalovski.readerapp.data.DataOrException
 import com.hnalovski.readerapp.data.Resource
 import com.hnalovski.readerapp.model.Item
 import com.hnalovski.readerapp.network.BooksAPI

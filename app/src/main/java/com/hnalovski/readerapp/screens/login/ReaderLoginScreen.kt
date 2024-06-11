@@ -87,7 +87,7 @@ fun ReaderLoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val text = if (showLoginForm.value) "Sign up" else "Login"
-            Text(text = "New User?", fontSize = 17.sp)
+            Text(text = if (showLoginForm.value) "New User?" else "Existing User?", fontSize = 17.sp)
             Text(text = text,
                 modifier = Modifier
                     .clickable {

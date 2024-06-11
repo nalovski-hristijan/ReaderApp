@@ -197,7 +197,7 @@ fun ReaderAppBar(
         Row(verticalAlignment = Alignment.CenterVertically) {
             if (showProfile) {
                 Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    painter = painterResource(id = R.drawable.app_logo),
                     contentDescription = "icon",
                     modifier = Modifier
                         .clip(RoundedCornerShape(12.dp))
